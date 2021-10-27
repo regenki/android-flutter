@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.regenki">
+    package="com.regenki.regenki">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
    <application
-        android:label="regenki"
+        android:label="Regenki"
         android:icon="@mipmap/ic_launcher">
 
         <activity
@@ -40,5 +41,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+       <service
+           android:name="me.carda.awesome_notifications.services.ForegroundService"
+           android:enabled="true"
+           android:exported="false"
+           android:foregroundServiceType="microphone|mediaPlayback"
+           android:stopWithTask="true"></service>
     </application>
+
 </manifest>

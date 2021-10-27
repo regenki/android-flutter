@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:regenki/Shared/Theme.dart';
+import 'package:regenki/View/Page/ActivityViewPage.dart';
 
 class OnBoardingViewPage extends StatelessWidget {
   const OnBoardingViewPage({Key? key}) : super(key: key);
@@ -7,18 +8,18 @@ class OnBoardingViewPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         color: primaryColor,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding: EdgeInsets.only(),
+              padding: EdgeInsets.only(top: 48),
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 24),
-                height: 360,
-                child: Image.network(
-                    "https://static.wikia.nocookie.net/bandori/images/e/e5/Pessimistic_Girl_Live2D_Model.png/revision/latest/scale-to-width-down/666?cb=20200315175650"),
+                height: 280,
+                child:Image.asset("assets/ilustrations/ilustrationOnBoarding.png"),
               ),
             ),
             Padding(
@@ -40,7 +41,9 @@ class OnBoardingViewPage extends StatelessWidget {
             ),
             Spacer(),
             GestureDetector(
-              onTap: (){},
+              onTap: (){
+                Navigator.push(context, MaterialPageRoute(builder: (context)=> ActivityViewPage()));
+              },
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 height: MediaQuery.of(context).size.height * 0.08,

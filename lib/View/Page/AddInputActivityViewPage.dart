@@ -1,7 +1,13 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:regenki/Bloc/Notification/NotificationServiceCubit.dart';
 import 'package:regenki/Model/Activity.dart';
+import 'package:regenki/Service/NotificationService.dart';
 import 'package:regenki/Shared/Theme.dart';
+import 'package:regenki/Bloc/Activity/ActivityServiceCubit.dart';
 
 class AddInputViewPage extends StatefulWidget {
   //const AddInputViewPage({Key? key}) : super(key: key);
@@ -11,6 +17,7 @@ class AddInputViewPage extends StatefulWidget {
 
 class _AddInputViewPageState extends State<AddInputViewPage> {
   TextEditingController titleController = TextEditingController();
+  TextEditingController categotyController = TextEditingController();
 
   String categoryText = "Dancing";
   String stickerText = "assets/images/angry.png";
@@ -18,32 +25,75 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
   DateTime dateData = DateTime.now();
   TimeOfDay timeData = TimeOfDay.now();
 
+
+
   selectDateWidget(BuildContext context) async {
     final DateTime? selected = await showDatePicker(
-        context: context,
-
-        initialDate: dateData,
-        firstDate: DateTime(2020),
-        lastDate: DateTime(2030),helpText: "Find your Activity",);
+      context: context,
+      initialDate: dateData,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      helpText: "Find your Activity",
+    );
     if (selected != null && selected != dateData) {
       setState(() {
         dateData = selected;
-
       });
-
     }
   }
+
   selectTimeWidget(BuildContext context) async {
-    final TimeOfDay? selected = await showTimePicker(context: context, initialTime: timeData,helpText: "Set times of your activity"
-     );
+    final TimeOfDay? selected = await showTimePicker(
+        context: context,
+        initialTime: timeData,
+        helpText: "Set times of your activity");
     if (selected != null && selected != timeData) {
       setState(() {
         timeData = selected;
       });
-
     }
   }
 
+  Widget saveActivityButton(BuildContext context) {
+    return BlocBuilder<ActivityServiceCubit, ActivityServiceState>(
+        builder: (context, state) {
+      return TextButton(
+          onPressed: () async {
+            var activity = Activity(
+                title: titleController.text,
+                dateTime: DateTime(dateData.year, dateData.month,
+                    dateData.day, timeData.hour, timeData.minute),
+                category: categoryText,
+                sticker: stickerText);
+            NotificationService().createNotification(activity);
+            setState(() {
+
+              if (categoryText == "Others")
+
+              print(activity);
+              //context.read<NotificationServiceCubit>().add(activity);
+
+              context.read<ActivityServiceCubit>().insertData(activity);
+            });
+
+
+            Navigator.pop(context);
+          },
+          child: Text(
+            "Save",
+            style: poppinstextColor.copyWith(
+                fontSize: 14, color: Colors.green, fontWeight: FontWeight.w700),
+          ));
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    titleController.dispose();
+    categotyController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +108,9 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       child: Text(
                         "Cancel",
                         style: poppinsWhiteColor.copyWith(
@@ -66,21 +118,12 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
                             color: Colors.red,
                             fontWeight: FontWeight.w700),
                       )),
-                  TextButton(
-                      onPressed: () {
-
-                      },
-                      child: Text(
-                        "Save",
-                        style: poppinsWhiteColor.copyWith(
-                            fontSize: 14,
-                            color: Colors.green,
-                            fontWeight: FontWeight.w700),
-                      ))
+                  saveActivityButton(context)
                 ],
               ),
             ),
             TextField(
+              controller: titleController,
               decoration: InputDecoration(hintText: "Title"),
             ),
             Row(
@@ -96,7 +139,6 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
                     setState(() {
                       categoryText = value!;
                     });
-
                   },
                   items: <String>[
                     "Dancing",
@@ -114,20 +156,29 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
                 )
               ],
             ),
-            categoryText == "Others" ? TextField(
-              decoration: InputDecoration(hintText: "Category"),
-            ) : SizedBox(),
+            categoryText == "Others"
+                ? TextField(
+                    decoration: InputDecoration(hintText: "Category"),
+                  )
+                : SizedBox(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text("Date Activity"),
-                TextButton(
-                    style: TextButton.styleFrom(backgroundColor: primaryColor),
-                    onPressed: () {
-                      selectDateWidget(context);
-                    },
-                    child: Text(
-                        "${dateData.day}/${dateData.month}/${dateData.year}",style: poppinstextColor,))
+                Row(
+                  children: [
+                    Image.asset("assets/support/dateicon.png",width: 56,height: 56,),
+                    TextButton(
+                        style: TextButton.styleFrom(backgroundColor: primaryColor),
+                        onPressed: () {
+                          selectDateWidget(context);
+                        },
+                        child: Text(
+                          "${dateData.day}/${dateData.month}/${dateData.year}",
+                          style: poppinstextColor,
+                        )),
+                  ],
+                )
               ],
             ),
             Row(
@@ -135,14 +186,17 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
               children: [
                 Text("Time Activity"),
                 TextButton(
-                  style: TextButton.styleFrom(backgroundColor: primaryColor),
+                    style: TextButton.styleFrom(backgroundColor: primaryColor),
                     onPressed: () {
                       selectTimeWidget(context);
                     },
                     child: Text(
-                        "${timeData.hour}:${timeData.minute}",style: poppinstextColor,))
+                      "${timeData.hour}:${timeData.minute}",
+                      style: poppinstextColor,
+                    ))
               ],
-            ),Row(
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -154,9 +208,7 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
                   onChanged: (String? value) {
                     setState(() {
                       stickerText = value!;
-
                     });
-
                   },
                   items: <String>[
                     "assets/images/angry.png",
@@ -170,13 +222,18 @@ class _AddInputViewPageState extends State<AddInputViewPage> {
                     "assets/images/smile.png",
                     "assets/images/twink.png"
                   ].map<DropdownMenuItem<String>>((String e) {
-                    return DropdownMenuItem(value: e, child: SizedBox(width: 48,height: 48,child: Image.asset(e),));
+                    return DropdownMenuItem(
+                        value: e,
+                        child: SizedBox(
+                          width: 48,
+                          height: 48,
+                          child: Image.asset(e),
+                        ));
                   }).toList(),
                   value: stickerText,
                 )
               ],
             ),
-
           ],
         ),
       ),

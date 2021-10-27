@@ -36,6 +36,8 @@ dependencies:
   equatable: ^2.0.3
   rive: ^0.7.28
   sqflite: ^2.0.0+4
+  path_provider: ^2.0.5
+  awesome_notifications: ^0.0.6+11
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +66,10 @@ flutter:
     - assets/images/peace.png
     - assets/images/smile.png
     - assets/images/twink.png
+    - assets/ilustrations/ilustrationOnBoarding.png
+    - assets/ilustrations/noActivity.png
+    - assets/support/dateicon.png
+    - assets/support/editicon.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
