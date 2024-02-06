@@ -54,14 +54,14 @@ platform :android do
       version_name:"1.1.1",
       aab: "../build/app/outputs/bundle/release/app-release.aab",
         package_name: "com.regenki.regenki",
-        version_code: 13,
+        version_code: 14,
         track: "internal",
         json_key: ENV["ANDROID_JSON_KEY_FILE"],
         skip_upload_metadata: true,
         skip_upload_screenshots: true,
         skip_upload_images: true,
         skip_upload_apk: true,
-        track: 'internal',
+        track: 'production',
       )
     end
   desc "Submit a new version to the internal track in the Google Play"
