@@ -9,10 +9,10 @@ on:
       lane:
         description: "Fastlane lane"
         required: true
-        default: "internal"
+        default: "deploy_internal"
         type: choice
         options:
-          - beta
+          - deploy_internal
           - promote_to_production
           - internal
 
@@ -54,8 +54,8 @@ jobs:
       # Configure Keystore.
       - name: Configure Keystore
         run: |
-          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > ./android/regenki.keystore
-          echo "storeFile=upload-keystore.jks" >> ./android/key.properties
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > ./android/regenki.jks
+          echo "storeFile=./android/regenki.jks" >> ./android/key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> ./android/key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> ./android/key.properties
           echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> ./android/key.properties
@@ -72,7 +72,7 @@ jobs:
       - name: Run fastlane
         run: |
           bundle install
-          bundle exec fastlane ${{ github.event.inputs.lane || 'internal' }}
+          bundle exec fastlane ${{ github.event.inputs.lane || 'deploy_internal' }}
         env:
           FASTLANE_JSON_KEY_FILE: android/fastlane/ivory-hallway-282008-8c8633bf9351.json
         working-directory: ./android
