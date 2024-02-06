@@ -132,7 +132,13 @@ platform :android do
 
       upload_to_play_store(
         track: "internal",
-        json_key: ENV["ANDROID_JSON_KEY_FILE"]
+        json_key: ENV["ANDROID_JSON_KEY_FILE"],
+        skip_upload_metadata: true,
+        skip_upload_screenshots: true,
+        skip_upload_images: true,
+        skip_upload_apk: true,
+        track: 'internal',
+        aab: '../build/app/outputs/bundle/release/app-release.aab'
       )
     end
   desc "Submit a new version to the internal track in the Google Play"
