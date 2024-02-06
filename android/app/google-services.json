@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "729844459386",
+    "project_id": "regenki-1ad22",
+    "storage_bucket": "regenki-1ad22.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:729844459386:android:57b6e9788b82aec6f798c3",
+        "android_client_info": {
+          "package_name": "com.regenki.regenki"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQLQXJcMmDSadlBzwaEiyIsm9s3IogF4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

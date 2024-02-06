@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:regenki/View/Page/ActivityViewPage.dart';
-import 'package:regenki/View/Page/AddInputActivityViewPage.dart';
 import 'package:regenki/Bloc/Activity/ActivityServiceCubit.dart';
 
 import 'package:regenki/View/Page/OnBoardingViewPage.dart';
