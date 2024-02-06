@@ -37,25 +37,39 @@ platform :android do
     )
   end
 
-   desc "Fetches the latest version code from the Play Console and increments it by 1"
-    lane :fetch_and_increment_build_number do
-      app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+   desc 'Setup getLatest version code'
+   private_lane :get_latest_version_code do
 
-      version_codes = google_play_track_version_codes(
-        package_name: app_identifier,
-        track: "internal",
-        json_key: ENV["ANDROID_JSON_KEY_FILE"]
-      )
+       internal_build_number = google_play_track_version_codes(
+         track: "internal",
+         package_name: ENV['BUNDLE_ID'],
+         json_key: play_store_key_path
+       )[0].to_i
 
-      updated_version_code = version_codes[0] + 1
+       prod_build_number = google_play_track_version_codes(
+         track: "production",
+         package_name: ENV['BUNDLE_ID'],
+         json_key: play_store_key_path
+       )[0].to_i
 
-      increment_version_code(
-        version_code: updated_version_code
-      )
-    end
+       beta_build_number = google_play_track_version_codes(
+         track: "beta",
+         package_name: ENV['BUNDLE_ID'],
+         json_key: play_store_key_path
+       )[0].to_i
+
+       alpha_build_number = google_play_track_version_codes(
+         track: "alpha",
+
+         package_name: ENV['BUNDLE_ID'],
+         json_key: play_store_key_path
+       )[0].to_i
+
+       [internal_build_number, prod_build_number, beta_build_number, alpha_build_number].max
+     end
 
   lane :deploy do
-      fetch_and_increment_build_number
+      get_latest_version_code
       gradle(
         task: "bundle", # or "assemble", if you want to build an APK
         build_type: "release",

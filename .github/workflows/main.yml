@@ -75,4 +75,5 @@ jobs:
           KEY_PASSWORD: ${{secrets.KEYSTORE_KEY_PASSWORD}}
           KEY_ALIAS: ${{secrets.KEYSTORE_KEY_ALIAS}}
           ANDROID_JSON_KEY_FILE: ${{steps.regenki_service_api.outputs.filepath}}
+          BUNDLE_ID: "com.regenki.regenki"
         working-directory: ./android
