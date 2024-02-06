@@ -118,7 +118,6 @@ platform :android do
   end
 
   lane :deploy do
-      fetch_and_increment_build_number
 
       gradle(
         task: "bundle", # or "assemble", if you want to build an APK
