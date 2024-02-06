@@ -49,8 +49,6 @@ platform :android do
           "android.injected.signing.key.password" => ENV["KEY_PASSWORD"],
         }
       )
-      sh "flutter pub get"
-      sh "flutter build appbundle -v"
 
       upload_to_play_store(
       aab: "../build/app/outputs/bundle/release/app-release.aab",
