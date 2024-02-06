@@ -59,7 +59,7 @@ jobs:
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
           echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
-          echo "$PLAY_STORE_CONFIG_JSON" | base64 --decode >> fastlane/ivory-hallway-282008-8c8633bf9351.json
+          echo "$PLAY_STORE_CONFIG_JSON" | base64 --decode >> app/ivory-hallway-282008-8c8633bf9351.json
         env:
           PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
@@ -73,7 +73,8 @@ jobs:
       - name: Run fastlane
         run: |
           bundle install
+          bundle exec fastlane action supply
           bundle exec fastlane ${{ github.event.inputs.lane || 'deploy_internal' }}
         env:
-          FASTLANE_JSON_KEY_FILE: fastlane/ivory-hallway-282008-8c8633bf9351.json
+          FASTLANE_JSON_KEY_FILE: app/ivory-hallway-282008-8c8633bf9351.json
         working-directory: ./android
