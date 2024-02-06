@@ -51,6 +51,13 @@ jobs:
       - name: Setup up Flutter
         run: flutter pub get
 
+      - name: Download Android keystore
+        id: android_keystore
+        uses: timheuer/base64-to-file@v1.0.3
+        with:
+          fileName: regenki.jks
+          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
+
       # Configure Keystore.
       - name: Configure Keystore
         run: |
@@ -59,7 +66,7 @@ jobs:
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
           echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
-          echo "$PLAY_STORE_CONFIG_JSON" >> fastlane/ivory-hallway-282008-8c8633bf9351.json
+          echo "$PLAY_STORE_CONFIG_JSON" | base64 --decode >> fastlane/ivory-hallway-282008-8c8633bf9351.json
         env:
           PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
@@ -69,6 +76,7 @@ jobs:
         working-directory: ./android
 
       # Build and deploy with Fastlane.
+
       - name: Run fastlane
         run: |
           bundle install
