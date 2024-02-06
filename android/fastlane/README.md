@@ -31,6 +31,22 @@ Update version
 
 Submit a new Beta
 
+### android deploy
+
+```sh
+[bundle exec] fastlane android deploy
+```
+
+
+
+### android increment_vc
+
+```sh
+[bundle exec] fastlane android increment_vc
+```
+
+Increment version code
+
 ### android deploy_internal
 
 ```sh

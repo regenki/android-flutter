@@ -49,21 +49,29 @@ platform :android do
           "android.injected.signing.key.password" => ENV["KEY_PASSWORD"],
         }
       )
+      sh "flutter pub get"
+      sh "flutter build appbundle -v"
 
       upload_to_play_store(
-      version_name:"1.1.1",
       aab: "../build/app/outputs/bundle/release/app-release.aab",
         package_name: "com.regenki.regenki",
-        version_code: 14,
         track: "internal",
         json_key: ENV["ANDROID_JSON_KEY_FILE"],
         skip_upload_metadata: true,
         skip_upload_screenshots: true,
         skip_upload_images: true,
         skip_upload_apk: true,
-        track: 'production',
       )
     end
+
+    desc "Increment version code"
+     lane :increment_vc do
+     increment_version_code(
+           gradle_file_path: "../app/build.gradle",
+     )
+     end
+
+
   desc "Submit a new version to the internal track in the Google Play"
     lane :deploy_internal do
       gradle(task: "clean")
