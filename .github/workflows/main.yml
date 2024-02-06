@@ -51,9 +51,6 @@ jobs:
       - name: Setup up Flutter
         run: flutter pub get
 
-      - name: Debug keystore file location
-        run: ls -la /home/runner/work/android-flutter/android-flutter/android/app/app/
-
       # Configure Keystore.
       - name: Configure Keystore
         run: |
