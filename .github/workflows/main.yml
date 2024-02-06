@@ -74,5 +74,5 @@ jobs:
           bundle install
           bundle exec fastlane ${{ github.event.inputs.lane || 'deploy_internal' }}
         env:
-          FASTLANE_JSON_KEY_FILE: android/fastlane/ivory-hallway-282008-8c8633bf9351.json
+          FASTLANE_JSON_KEY_FILE: fastlane/ivory-hallway-282008-8c8633bf9351.json
         working-directory: ./android
