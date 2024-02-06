@@ -99,6 +99,26 @@ platform :android do
       aab: '../build/app/outputs/bundle/release/app-release.aab'
     )
   end
+
+  lane :deploy do
+      fetch_and_increment_build_number
+
+      gradle(
+        task: "bundle", # or "assemble", if you want to build an APK
+        build_type: "release",
+        properties: {
+          "android.injected.signing.store.file" => ENV["KEYSTORE_FILE"],
+          "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
+          "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
+          "android.injected.signing.key.password" => ENV["KEY_PASSWORD"],
+        }
+      )
+
+      upload_to_play_store(
+        track: "internal",
+        json_key: ENV["ANDROID_JSON_KEY_FILE"]
+      )
+    end
   desc "Submit a new version to the internal track in the Google Play"
     lane :deploy_internal do
       gradle(task: "clean")

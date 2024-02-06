@@ -14,7 +14,7 @@ on:
         options:
           - deploy_internal
           - promote_to_production
-          - internal
+          - deploy
 
 # Declare default permissions as read-only.
 permissions: read-all
@@ -36,7 +36,19 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
+      - name: Decode Service Account Key JSON File
+        uses: timheuer/base64-to-file@v1
+        id: regenki_keystore
+        with:
+            fileName: "regenki.jks"
+            encodedString: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
 
+      - name: Decode Service Account Key JSON File
+        uses: timheuer/base64-to-file@v1
+        id: regenki_service_api
+        with:
+          fileName: "ivory-hallway-282008-8c8633bf9351.json"
+          encodedString: ${{ secrets.PLAY_STORE_CONFIG_JSON }}
       # Checkout the repository
       - name: Checkout repository code
         uses: actions/checkout@v2
@@ -51,30 +63,15 @@ jobs:
       - name: Setup up Flutter
         run: flutter pub get
 
-      # Configure Keystore.
-      - name: Configure Keystore
-        run: |
-          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/regenki.jks
-          echo "storeFile=regenki.jks" >> key.properties
-          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
-          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
-          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
-          echo "$PLAY_STORE_CONFIG_JSON" | base64 --decode >> app/ivory-hallway-282008-8c8633bf9351.json
-        env:
-          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
-          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
-          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
-          PLAY_STORE_CONFIG_JSON: ${{ secrets.PLAY_STORE_CONFIG_JSON }}
-        working-directory: ./android
-
       # Build and deploy with Fastlane.
 
       - name: Run fastlane
         run: |
           bundle install
-          bundle exec fastlane action supply
-          bundle exec fastlane ${{ github.event.inputs.lane || 'deploy_internal' }}
+          bundle exec fastlane ${{ github.event.inputs.lane || 'deploy' }}
         env:
-          FASTLANE_JSON_KEY_FILE: app/ivory-hallway-282008-8c8633bf9351.json
-        working-directory: ./android
+          KEYSTORE_FILE: ${{steps.regenki_keystore.outputs.filepath}}
+          KEYSTORE_PASSWORD: ${{secrets.KEYSTORE_KEY_PASSWORD}}
+          KEY_PASSWORD: ${{secrets.KEYSTORE_KEY_PASSWORD}}
+          KEY_ALIAS: ${{secrets.KEYSTORE_KEY_ALIAS}}
+          ANDROID_JSON_KEY_FILE: ${{steps.regenki_service_api.outputs.filepath}}
