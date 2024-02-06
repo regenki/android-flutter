@@ -58,7 +58,6 @@ platform :android do
         skip_upload_images: true,
         skip_upload_apk: true,
         track: 'internal',
-        aab: '../build/app/outputs/bundle/release/app-release.aab'
       )
     end
   desc "Submit a new version to the internal track in the Google Play"
