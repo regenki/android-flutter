@@ -54,8 +54,8 @@ jobs:
       # Configure Keystore.
       - name: Configure Keystore
         run: |
-          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > regenki.jks
-          echo "storeFile=regenki.jks" >> key.properties
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/regenki.jks
+          echo "storeFile=app/regenki.jks" >> key.properties
           echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
           echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
           echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
