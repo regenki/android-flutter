@@ -43,26 +43,26 @@ platform :android do
        internal_build_number = google_play_track_version_codes(
          track: "internal",
          package_name: ENV['BUNDLE_ID'],
-         json_key: play_store_key_path
+         json_key: ENV["ANDROID_JSON_KEY_FILE"]
        )[0].to_i
 
        prod_build_number = google_play_track_version_codes(
          track: "production",
          package_name: ENV['BUNDLE_ID'],
-         json_key: play_store_key_path
+         json_key: ENV["ANDROID_JSON_KEY_FILE"]
        )[0].to_i
 
        beta_build_number = google_play_track_version_codes(
          track: "beta",
          package_name: ENV['BUNDLE_ID'],
-         json_key: play_store_key_path
+         json_key: ENV["ANDROID_JSON_KEY_FILE"]
        )[0].to_i
 
        alpha_build_number = google_play_track_version_codes(
          track: "alpha",
 
          package_name: ENV['BUNDLE_ID'],
-         json_key: play_store_key_path
+         json_key: ENV["ANDROID_JSON_KEY_FILE"]
        )[0].to_i
 
        [internal_build_number, prod_build_number, beta_build_number, alpha_build_number].max
