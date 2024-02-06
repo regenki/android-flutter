@@ -68,6 +68,7 @@ jobs:
       - name: Run fastlane
         run: |
           bundle install
+          bundle exec fastlane env
           bundle exec fastlane ${{ github.event.inputs.lane || 'deploy' }}
         env:
           KEYSTORE_FILE: ${{steps.regenki_keystore.outputs.filepath}}
