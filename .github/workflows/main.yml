@@ -1,6 +1,9 @@
 name: Deploy to Play Store
 on:
-  # Enable manual run
+
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       lane:
@@ -27,6 +30,13 @@ jobs:
           channel: stable
       - run: flutter doctor -v
 
+      - name: Setup JAVA Environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: '11'
+
+
       # Checkout the repository
       - name: Checkout repository code
         uses: actions/checkout@v2
@@ -37,6 +47,9 @@ jobs:
         with:
           ruby-version: "3.3.0"
           bundler-cache: true
+
+      - name: Setup up Flutter
+        run: flutter pub get
 
       # Configure Keystore.
       - name: Configure Keystore
