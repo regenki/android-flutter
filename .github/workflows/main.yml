@@ -54,12 +54,12 @@ jobs:
       # Configure Keystore.
       - name: Configure Keystore
         run: |
-          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > ./android/regenki.jks
-          echo "storeFile=./android/regenki.jks" >> ./android/key.properties
-          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> ./android/key.properties
-          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> ./android/key.properties
-          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> ./android/key.properties
-          echo "$PLAY_STORE_CONFIG_JSON" >> ./android/fastlane/ivory-hallway-282008-8c8633bf9351.json
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > regenki.jks
+          echo "storeFile=regenki.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+          echo "$PLAY_STORE_CONFIG_JSON" >> fastlane/ivory-hallway-282008-8c8633bf9351.json
         env:
           PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
           KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
