@@ -51,13 +51,6 @@ jobs:
       - name: Setup up Flutter
         run: flutter pub get
 
-      - name: Download Android keystore
-        id: android_keystore
-        uses: timheuer/base64-to-file@v1.0.3
-        with:
-          fileName: regenki.jks
-          encodedString: ${{ secrets.KEYSTORE_BASE64 }}
-
       # Configure Keystore.
       - name: Configure Keystore
         run: |
