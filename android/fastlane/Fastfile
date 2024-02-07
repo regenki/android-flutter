@@ -43,6 +43,8 @@ platform :android do
         task: "bundle", # or "assemble", if you want to build an APK
         build_type: "release",
         properties: {
+          "android.injected.version.code" => ENV["VERSION_CODE"],
+          "android.injected.version.name" => ENV["VERSION_NAME"],
           "android.injected.signing.store.file" => ENV["KEYSTORE_FILE"],
           "android.injected.signing.store.password" => ENV["KEYSTORE_PASSWORD"],
           "android.injected.signing.key.alias" => ENV["KEY_ALIAS"],
