@@ -77,6 +77,6 @@ jobs:
           KEY_ALIAS: ${{secrets.KEYSTORE_KEY_ALIAS}}
           ANDROID_JSON_KEY_FILE: ${{steps.regenki_service_api.outputs.filepath}}
           BUNDLE_ID: "com.regenki.regenki"
-          VERSION_NAME: "1.1.1",
-            VERSION_CODE: 16
+          VERSION_NAME: "1.1.1"
+          VERSION_CODE: 16
         working-directory: ./android
