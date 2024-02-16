@@ -15,6 +15,9 @@ on:
           - deploy_internal
           - promote_to_production
           - deploy
+      bundle_id:
+        description: "Client bundle ID"
+        required: true
 
 # Declare default permissions as read-only.
 permissions: read-all
@@ -76,7 +79,7 @@ jobs:
           KEY_PASSWORD: ${{secrets.KEYSTORE_KEY_PASSWORD}}
           KEY_ALIAS: ${{secrets.KEYSTORE_KEY_ALIAS}}
           ANDROID_JSON_KEY_FILE: ${{steps.regenki_service_api.outputs.filepath}}
-          BUNDLE_ID: "com.regenki.regenki"
+          BUNDLE_ID: ${{ github.event.inputs.bundle_id }}
           VERSION_NAME: "1.1.1"
           VERSION_CODE: 16
         working-directory: ./android
