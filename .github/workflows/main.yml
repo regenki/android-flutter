@@ -9,7 +9,7 @@ on:
       lane:
         description: "Fastlane lane"
         required: true
-        default: "deploy_internal"
+        default: deploy_internal
         type: choice
         options:
           - deploy_internal
